@@ -12,20 +12,20 @@ public class FileReaderDemo {
 
         byte[] buff = new byte[500];
 
-        int num_of_read_bytes;
+        int num_of_read_bytes = 0;
 
         // way 1
-        // while (fis.available() > 0) {
-        //     num_of_read_bytes = fis.read(buff);
-        //     System.out.println(byte2string(buff, num_of_read_bytes));
-        // }
+        while (fis.available() > 0) {
+            num_of_read_bytes = fis.read(buff);
+            System.out.println(byte2string(buff, num_of_read_bytes));
+        }
 
 
         // way 2
 
-        while ((num_of_read_bytes = fis.read(buff)) != -1) {
-            System.out.println(byte2string(buff, num_of_read_bytes));
-        }
+        // while ((num_of_read_bytes = fis.read(buff)) != -1) {
+        //     System.out.println(byte2string(buff, num_of_read_bytes));
+        // }
         System.out.printf("\nlast iteration read: %d\n", num_of_read_bytes);
         fis.close();
 

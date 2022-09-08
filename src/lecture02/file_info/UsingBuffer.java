@@ -9,7 +9,7 @@ public class UsingBuffer {
     public static void main(String[] args) throws IOException {
         FileOutputStream fos = new FileOutputStream("data.txt");
 
-        BufferedOutputStream bos = new BufferedOutputStream(fos, 8);
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
 
         byte[] b = "Khalid Ahmed".getBytes();
         bos.write(b);
