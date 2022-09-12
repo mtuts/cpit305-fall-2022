@@ -7,26 +7,26 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Demo {
-    public static void main(String[] args) throws IOException {
-        File file = new File("src/lecture04/text/sample.txt");
-        FileOutputStream fos = new FileOutputStream(file); // , true);
-        PrintWriter writer = new PrintWriter(fos);
+  public static void main(String[] args) throws IOException {
+    File file = new File("src/lecture04/text/sample.txt");
+    FileOutputStream fos = new FileOutputStream(file); // we removed 2nd param to replace content every time, true); // add true to append every time you run this code
+    PrintWriter writer = new PrintWriter(fos);
 
 
-        Scanner keyboard = new Scanner(System.in);
+    Scanner keyboard = new Scanner(System.in);
 
-        String line;
-        while (true) {
-            System.out.print("Enter your text (to exit write [:quit]): ");
-            line = keyboard.nextLine();
+    String line;
+    while (true) {
+      System.out.print("Enter your text (to exit write [:quit]): ");
+      line = keyboard.nextLine();
 
-            if (line.equalsIgnoreCase(":quit")) break;
+      if (line.equalsIgnoreCase(":quit")) break;
 
-            writer.println(line);
+      writer.println(line);
 
-        }
-
-
-        writer.close();
     }
+
+
+    writer.close();
+  }
 }
