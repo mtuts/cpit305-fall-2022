@@ -198,7 +198,16 @@ public class Interactive {
         System.out.println("Employee info has been updated");
         displayEmployee(raf);
     }
+ private static void deleteEmployee(RandomAccessFile raf) throws IOException {
+        long pos = raf.getChannel().position();
+        raf.writeInt(0);
+        writeFixedString("0", raf);
+        raf.skipBytes(ID_LENGTH + NAME_LENGTH);
+        raf.writeDouble(0);
+        raf.seek(pos);
+        System.out.println("Employee info has been deleted");
 
+    }
     private static void displayEmployee(RandomAccessFile raf) throws IOException {
         int id = raf.readInt();
         String name = readFixedString(raf);
