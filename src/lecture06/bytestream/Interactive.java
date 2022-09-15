@@ -205,6 +205,7 @@ public class Interactive {
         displayEmployee(raf); // it will print the employee info before the edit
         raf.seek(pos);
         raf.writeInt(-1); // edit the id to prevent from printing 
+        raf.seek(pos); // added
     }
 
     private static void displayEmployee(RandomAccessFile raf) throws IOException {
