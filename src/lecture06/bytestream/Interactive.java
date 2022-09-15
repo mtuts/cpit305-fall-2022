@@ -86,7 +86,7 @@ public class Interactive {
         if (option.equals("1")) {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
-            System.out.println("Not implemented yet");
+            DeleteEmployee(raf);
         } else {
             System.out.println("Wrong choice!");
         }
@@ -197,6 +197,20 @@ public class Interactive {
         raf.seek(pos);
         System.out.println("Employee info has been updated");
         displayEmployee(raf);
+    }
+    
+        private static void DeleteEmployee(RandomAccessFile raf) throws IOException{
+                
+             long pos = raf.getChannel().position();
+            raf.seek(raf.length() - (RECORD_SIZE));
+              
+            String name = readFixedString(raf); 
+            
+            raf.setLength(raf.length() - (RECORD_SIZE));
+            raf.seek(pos);
+            raf.writeInt(raf.readInt());
+            raf.writeDouble(raf.readDouble());
+            writeFixedString(name, raf);
     }
 
     private static void displayEmployee(RandomAccessFile raf) throws IOException {
