@@ -79,17 +79,52 @@ public class Interactive {
         System.out.println("Choose form following:");
 
         System.out.println("1. Edit");
-        System.out.println("2. Delete (Not implemented yet)");
+        System.out.println("2. Delete");
         
         String option = keyboard.nextLine();
 
         if (option.equals("1")) {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
-            System.out.println("Not implemented yet");
+        
+            deleteEmp(raf);
+            System.out.print("Successfully deleted Employee");
+        
         } else {
             System.out.println("Wrong choice!");
         }
+    }
+
+    private static void deleteEmp(RandomAccessFile raf) throws IOException {
+
+        //if the record is the last record simply, set the length of the file before it
+        if((raf.getChannel().position() + RECORD_SIZE) < 1){
+            raf.setLength(raf.length() - RECORD_SIZE);
+        }else{
+        //Get current pos for emp
+        long pos = raf.getChannel().position();
+        //Get last record position
+        long lastRecordPos = raf.length() - RECORD_SIZE;
+        //move pointer to the last record
+        raf.seek(lastRecordPos);
+        //Get info from last record
+        int id = raf.readInt();
+        String name = readFixedString(raf);
+        double salary = raf.readDouble();
+    
+        //move pointer to the record to be deleted
+        raf.seek(pos);
+        //write info on the record to be deleted
+        raf.writeInt(id);
+        writeFixedString(name, raf);
+        raf.writeDouble(salary);
+
+        //set file to the new length
+        raf.setLength(lastRecordPos);
+    }
+
+
+
     }
 
     private static int searchForEmployeeName(String emp_name, RandomAccessFile raf) throws IOException {
