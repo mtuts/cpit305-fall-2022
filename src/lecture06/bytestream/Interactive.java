@@ -200,9 +200,11 @@ public class Interactive {
     }
 
     private static void deleteEmployee(Scanner keyboard, RandomAccessFile raf) throws IOException {
+        long pos = raf.getChannel().position();
         System.out.println("Employee info has been deleted");
-        displayEmployee(raf);
-        raf.writeInt(-1);
+        displayEmployee(raf); // it will print the employee info before the edit
+        raf.seek(pos);
+        raf.writeInt(-1); // edit the id to prevent from printing 
     }
 
     private static void displayEmployee(RandomAccessFile raf) throws IOException {
