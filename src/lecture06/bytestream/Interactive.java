@@ -1,5 +1,4 @@
 package lecture06.bytestream;
-
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Scanner;
@@ -13,7 +12,7 @@ public class Interactive {
 
     public static void main(String[] args) throws IOException {
         Scanner keyboard = new Scanner(System.in);
-        RandomAccessFile raf = new RandomAccessFile("src/lecture05/bytestream/sample.dat", "rw");
+        RandomAccessFile raf = new RandomAccessFile("sample.dat", "rw");
         String option;
         while (true) {
             System.out.println("\n==========================================================\n");
@@ -33,6 +32,7 @@ public class Interactive {
                 System.out.print("Enter record Number: ");
                 option = keyboard.nextLine();
                 int record_number = Integer.parseInt(option);
+                //get the position of the record
                 long pos = (record_number - 1) * RECORD_SIZE;
 
                 if (pos <= raf.length() - RECORD_SIZE) {                
@@ -79,16 +79,17 @@ public class Interactive {
         System.out.println("Choose form following:");
 
         System.out.println("1. Edit");
-        System.out.println("2. Delete (Not implemented yet)");
-        
+        System.out.println("2. Delete");
+        System.out.println("press Enter to Exit");
+        System.out.print("Choose from above: ");
         String option = keyboard.nextLine();
 
         if (option.equals("1")) {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
-            System.out.println("Not implemented yet");
+          delete(raf);
         } else {
-            System.out.println("Wrong choice!");
+            System.out.println("exit");
         }
     }
 
@@ -121,6 +122,7 @@ public class Interactive {
             raf.skipBytes(ID_LENGTH);
             String name = readFixedString(raf);  // new pos = 4 + 15 = 19
             if (name.toLowerCase().contains(emp_name.toLowerCase())) {
+              //minus the id so we start from the start of record
                 raf.seek(raf.getChannel().position() - 4 - NAME_LENGTH);
                 System.out.println("We found it, choose from following: ");
                 return (int)raf.getChannel().position() / RECORD_SIZE + 1;
@@ -151,6 +153,7 @@ public class Interactive {
     }
 
     private static void writeFixedString(String name, RandomAccessFile raf) throws IOException {
+      //if name entered bigger than 15 trimmed it to only 15 character
         if (name.length() > NAME_LENGTH) {
             name = name.substring(0, NAME_LENGTH);
         }
@@ -198,6 +201,39 @@ public class Interactive {
         System.out.println("Employee info has been updated");
         displayEmployee(raf);
     }
+
+    
+    public static void delete(RandomAccessFile raf) throws IOException {
+        int i=0;
+        while(i<RECORD_SIZE){
+            //String blankData = new String(" ");
+            //raf.writeBytes(blankData);
+           //raf.writeBytes("deleted");
+           
+           raf.writeByte(0);
+
+            i++; 
+
+           
+          }
+           
+           
+            
+    
+          System.out.println(" ");
+          System.out.println("Employee information has been deleted");
+          System.out.println(" ");
+          raf.seek(0);
+          for(int x=0;x<raf.length()/RECORD_SIZE;x++){
+displayEmployee(raf);
+          }
+                   
+
+        }  
+        
+      
+     
+    
 
     private static void displayEmployee(RandomAccessFile raf) throws IOException {
         int id = raf.readInt();
