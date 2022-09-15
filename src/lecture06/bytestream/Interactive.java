@@ -13,7 +13,7 @@ public class Interactive {
 
     public static void main(String[] args) throws IOException {
         Scanner keyboard = new Scanner(System.in);
-        RandomAccessFile raf = new RandomAccessFile("src/lecture05/bytestream/sample.dat", "rw");
+        RandomAccessFile raf = new RandomAccessFile("src/javaapplication11/sample.dat", "rw");
         String option;
         while (true) {
             System.out.println("\n==========================================================\n");
@@ -79,14 +79,14 @@ public class Interactive {
         System.out.println("Choose form following:");
 
         System.out.println("1. Edit");
-        System.out.println("2. Delete (Not implemented yet)");
+        System.out.println("2. Delete ");
         
         String option = keyboard.nextLine();
 
         if (option.equals("1")) {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
-            System.out.println("Not implemented yet");
+             DELETeEmployee(keyboard,raf);
         } else {
             System.out.println("Wrong choice!");
         }
@@ -199,6 +199,37 @@ public class Interactive {
         displayEmployee(raf);
     }
 
+    private static void DELETeEmployee(Scanner keyboard, RandomAccessFile raf) throws IOException {
+        System.out.println("Which field do you want delete:");
+
+        System.out.println("1. ID");
+        System.out.println("2. Name");
+        System.out.println("3. Salary");
+        
+        String option = keyboard.nextLine();
+
+        long pos = raf.getChannel().position();
+
+        if (option.equals("1")) {
+            System.out.print("Enter Employee id  that you want to delete");
+            int id = Integer.parseInt(keyboard.nextLine());
+            raf.setLength(0);
+        } else if (option.equals("2")) {
+            System.out.print("Enter Employee  Name that you want to delete");
+            String name = keyboard.nextLine();
+            raf.setLength(0);
+        } else if (option.equals("3")) {
+            System.out.print("Enter Employee Salary that you want to delete");
+            double sal = Double.parseDouble(keyboard.nextLine());
+            raf.setLength(0);
+        } else {
+            System.out.println("Wrong choice!");
+            return;
+        }
+        raf.seek(pos);
+        System.out.println("Employee info has been updated");
+        displayEmployee(raf);
+    }
     private static void displayEmployee(RandomAccessFile raf) throws IOException {
         int id = raf.readInt();
         String name = readFixedString(raf);
@@ -219,4 +250,3 @@ public class Interactive {
 
         return str;
     }
-}
