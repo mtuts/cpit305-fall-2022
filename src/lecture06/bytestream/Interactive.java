@@ -94,7 +94,7 @@ public class Interactive {
            // the record I want to delete "Khaled Alkhodairi"
            deleteRecord(raf,pos1,pos2);
         } else {
-            System.out.println("Wrong choice!");
+            System.out.println(" Wrong choice! ");
         }
     }
 
@@ -104,14 +104,14 @@ public class Interactive {
         int id = raf.readInt();
         String name = readFixedString(raf);
         double salary = raf.readDouble();
-      //Second I back to the racord I will delete  it
-        raf.seek(pos1);
-        //chang info of the record and but info of last recor
-        raf.writeInt(id); 
-        writeFixedString(name, raf);
-        raf.writeDouble(salary);
+         //Second I back to the racord I will delete  it
+         raf.seek(pos1);
+         //chang info of the record and but info of last recor
+          raf.writeInt(id); 
+          writeFixedString(name, raf);
+          raf.writeDouble(salary);
         //here I change the length of file and reduce it by one record = 27
-        raf.setLength(raf.length()-RECORD_SIZE);
+          raf.setLength(raf.length()-RECORD_SIZE);
 
 
     }
