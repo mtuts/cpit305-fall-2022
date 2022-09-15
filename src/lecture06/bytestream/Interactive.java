@@ -194,6 +194,7 @@ public class Interactive {
             System.out.println("Wrong choice!");
             return;
         }
+        //
         raf.seek(pos);
         System.out.println("Employee info has been updated");
         displayEmployee(raf);
