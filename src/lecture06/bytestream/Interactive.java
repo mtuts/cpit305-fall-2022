@@ -83,7 +83,7 @@ public class Interactive {
         System.out.println("Choose form following:");
 
         System.out.println("1. Edit");
-        System.out.println("2. Delete (Not implemented yet)");
+        System.out.println("2. Delete");
 
         String option = keyboard.nextLine();
 
@@ -91,6 +91,7 @@ public class Interactive {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
             deleteRecourd(raf);
+            System.out.println("Employee Record delete it ");
 
         } else {
             System.out.println("Wrong choice!");
