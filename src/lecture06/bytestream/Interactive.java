@@ -79,14 +79,14 @@ public class Interactive {
         System.out.println("Choose form following:");
 
         System.out.println("1. Edit");
-        System.out.println("2. Delete (Not implemented yet)");
+        System.out.println("2. Delete");
         
         String option = keyboard.nextLine();
 
         if (option.equals("1")) {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
-            System.out.println("Not implemented yet");
+            deleteEmployee(keyboard, raf);
         } else {
             System.out.println("Wrong choice!");
         }
@@ -199,11 +199,21 @@ public class Interactive {
         displayEmployee(raf);
     }
 
+    private static void deleteEmployee(Scanner keyboard, RandomAccessFile raf) throws IOException {
+        System.out.println("Employee info has been deleted");
+        displayEmployee(raf);
+        raf.writeInt(-1);
+    }
+
     private static void displayEmployee(RandomAccessFile raf) throws IOException {
         int id = raf.readInt();
-        String name = readFixedString(raf);
-        double salary = raf.readDouble();
-        System.out.printf("%-10d | %-20s | %-10.2f\n", id, name, salary);
+        if(id == -1 ){
+            raf.skipBytes(RECORD_SIZE - ID_LENGTH);
+        } else {
+            String name = readFixedString(raf);
+            double salary = raf.readDouble();
+            System.out.printf("%-10d | %-20s | %-10.2f\n", id, name, salary);
+        }
     }
     
     public static String readFixedString(RandomAccessFile raf) throws IOException {
