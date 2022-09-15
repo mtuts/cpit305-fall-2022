@@ -12,8 +12,8 @@ public class Interactive {
     static final int RECORD_SIZE = NAME_LENGTH + ID_LENGTH + SALARY_LENGTH; // id(4), name(15), salary(8)
 
     public static void main(String[] args) throws IOException {
-        Scanner keyboard = new Scanner(System.in);
-        RandomAccessFile raf = new RandomAccessFile("src/lecture05/bytestream/sample.dat", "rw");
+           Scanner keyboard = new Scanner(System.in);
+        RandomAccessFile raf = new RandomAccessFile("src/javaapplication2/Sample.dat", "rw");
         String option;
         while (true) {
             System.out.println("\n==========================================================\n");
@@ -79,14 +79,15 @@ public class Interactive {
         System.out.println("Choose form following:");
 
         System.out.println("1. Edit");
-        System.out.println("2. Delete (Not implemented yet)");
+        System.out.println("2. Delete");
         
+          
         String option = keyboard.nextLine();
-
+        
         if (option.equals("1")) {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
-            System.out.println("Not implemented yet");
+        DeleteRecord(raf);   
         } else {
             System.out.println("Wrong choice!");
         }
@@ -217,6 +218,21 @@ public class Interactive {
             str += (char) buff[i];
         }
 
-        return str;
+        return str; 
     }
+  
+  public static void DeleteRecord(RandomAccessFile RAF) throws IOException{
+  
+      long POS = RAF.getChannel().position();
+      System.out.println(POS);
+      RAF.seek(RAF.length() - RECORD_SIZE);
+      int ID = RAF.readInt();
+      String Name = readFixedString(RAF);
+      double Salary = RAF.readDouble();
+      RAF.setLength(RAF.length() - RECORD_SIZE);
+      RAF.seek(POS);
+      RAF.writeInt(ID); 
+      writeFixedString(Name, RAF);
+      RAF.writeDouble(Salary); 
+  } 
 }
