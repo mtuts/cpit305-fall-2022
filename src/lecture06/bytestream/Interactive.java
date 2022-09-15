@@ -136,7 +136,7 @@ public class Interactive {
         System.out.println("Choose form following:");
 
         System.out.println("1. Edit");
-        System.out.println("2. Delete (Not implemented yet)");
+        System.out.println("2. Delete");
 
         String option = keyboard.nextLine();
 
