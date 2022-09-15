@@ -61,7 +61,7 @@ public class Interactive {
                 for (int i = 0; i < num_of_records; i++) {
                     displayEmployee(raf);
                 }
-            } else if (option.equals("10")) {
+            } else if (option.equals("5")) {
                 System.out.println("\nThank you for using our DB\n");
                 break;
             } else {
