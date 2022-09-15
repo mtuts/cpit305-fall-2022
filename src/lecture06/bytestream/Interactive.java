@@ -86,6 +86,7 @@ public class Interactive {
         if (option.equals("1")) {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
+            deletefor(raf);
             System.out.println(" ");
         } else {
             System.out.println("Wrong choice!");
@@ -163,41 +164,6 @@ public class Interactive {
         }
     }
 
-    private static void delete(Scanner keyboard, RandomAccessFile raf) throws IOException {
-        System.out.println("Which field do you want delete:");
-
-        System.out.println("1. ID");
-        System.out.println("2. Name");
-        System.out.println("3. Salary");
-        String option = keyboard.nextLine();
-        long pos = raf.getChannel().position();
-
-        if (option.equals("1")) {
-            System.out.print("Enter Employee new ID");
-            int id = Integer.parseInt(keyboard.nextLine());
-            raf.writeInt(id);
-        } else if (option.equals("2")) {
-            System.out.print("Enter Employee new Name");
-            String name = keyboard.nextLine();
-
-            raf.skipBytes(ID_LENGTH);
-            writeFixedString(name, raf);
-        } else if (option.equals("3")) {
-            System.out.print("Enter Employee new Salary");
-            double sal = Double.parseDouble(keyboard.nextLine());
-
-            raf.skipBytes(ID_LENGTH + NAME_LENGTH);
-            raf.writeDouble(sal);
-        } else {
-            System.out.println("Wrong choice!");
-            return;
-        }
-        raf.seek(pos);
-        System.out.println("Employee info has been updated");
-        displayEmployee(raf);
-
-    }
-
     private static void editEmployee(Scanner keyboard, RandomAccessFile raf) throws IOException {
         System.out.println("Which field do you want update:");
 
@@ -255,4 +221,15 @@ public class Interactive {
 
         return str;
     }
+
+    public static void deletefor(RandomAccessFile raf) throws IOException {
+        // while (true) {
+
+        raf.writeInt(0);
+        writeFixedString("Was deleted", raf);
+        raf.writeDouble(0);
+
+        // }
+    }
+
 }
