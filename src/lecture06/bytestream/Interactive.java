@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Interactive {
 
-    static final int ID_LENGTH = 4;
+   static final int ID_LENGTH = 4;
     static final int SALARY_LENGTH = 8;
     static final int NAME_LENGTH = 15;
     static final int RECORD_SIZE = NAME_LENGTH + ID_LENGTH + SALARY_LENGTH; // id(4), name(15), salary(8)
@@ -87,6 +87,17 @@ public class Interactive {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
             System.out.println("Not implemented yet");
+            
+            //----------------------------------------
+            long position = raf.getChannel().position();
+            raf.seek(raf.length()-RECORD_SIZE);
+            int ID = raf.readInt() ; 
+            String name = readFixedString(raf) ; 
+            double salary = raf.readDouble() ; 
+            
+            Delet_method(raf, ID, name, salary, position);
+           //-----------------------------------------------
+            
         } else {
             System.out.println("Wrong choice!");
         }
@@ -218,5 +229,13 @@ public class Interactive {
         }
 
         return str;
+    }
+    
+    public static void Delet_method(RandomAccessFile raf , int ID , String name , double salary , long pos) throws IOException{
+         raf.setLength(raf.length()-RECORD_SIZE);
+            raf.seek(pos);
+            raf.writeInt(ID);
+            writeFixedString(name, raf);
+            raf.writeDouble(salary);
     }
 }
