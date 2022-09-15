@@ -86,7 +86,7 @@ public class Interactive {
         if (option.equals("1")) {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
-            System.out.println("Not implemented yet");
+            DltEmp( raf );
         } else {
             System.out.println("Wrong choice!");
         }
@@ -203,7 +203,10 @@ public class Interactive {
         int id = raf.readInt();
         String name = readFixedString(raf);
         double salary = raf.readDouble();
-        System.out.printf("%-10d | %-20s | %-10.2f\n", id, name, salary);
+        if(id != 0 ){
+           System.out.printf("%-10d | %-20s | %-10.2f\n", id, name, salary); 
+        }
+        
     }
     
     public static String readFixedString(RandomAccessFile raf) throws IOException {
@@ -219,4 +222,22 @@ public class Interactive {
 
         return str;
     }
+    private static void DltEmp(RandomAccessFile raf ){
+
+        long pos = raf.getChannel().position();
+        raf.writeInt(0);
+       
+        writeFixedString("0", raf);
+       
+           raf.writeDouble(0);
+       
+         
+         raf.seek(pos);
+        System.out.println("Employee Deleted");
+        
+        displayEmployee(raf);
+    }
+
+    }
+
 }
