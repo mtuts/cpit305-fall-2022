@@ -80,18 +80,22 @@ public class Interactive {
 
         System.out.println("1. Edit");
         System.out.println("2. Delete");
-        
+        System.out.println("3. Exit");
+
         String option = keyboard.nextLine();
 
         if (option.equals("1")) {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
-            deleteEmployee(keyboard, raf);
+            deleteEmployee(raf);
+        } else if (option.equals("3")) {
+            return;
         } else {
             System.out.println("Wrong choice!");
         }
     }
 
+    
     private static int searchForEmployeeName(String emp_name, RandomAccessFile raf) throws IOException {
 
         // testing first and second record
@@ -175,17 +179,17 @@ public class Interactive {
         long pos = raf.getChannel().position();
 
         if (option.equals("1")) {
-            System.out.print("Enter Employee new ID");
+            System.out.print("Enter Employee new ID: ");
             int id = Integer.parseInt(keyboard.nextLine());
             raf.writeInt(id);
         } else if (option.equals("2")) {
-            System.out.print("Enter Employee new Name");
+            System.out.print("Enter Employee new Name: ");
             String name = keyboard.nextLine();
             
             raf.skipBytes(ID_LENGTH);
             writeFixedString(name, raf);
         } else if (option.equals("3")) {
-            System.out.print("Enter Employee new Salary");
+            System.out.print("Enter Employee new Salary: ");
             double sal = Double.parseDouble(keyboard.nextLine());
             
             raf.skipBytes(ID_LENGTH + NAME_LENGTH);
@@ -194,30 +198,43 @@ public class Interactive {
             System.out.println("Wrong choice!");
             return;
         }
-        //
         raf.seek(pos);
         System.out.println("Employee info has been updated");
         displayEmployee(raf);
     }
 
-    private static void deleteEmployee(Scanner keyboard, RandomAccessFile raf) throws IOException {
+    private static void deleteEmployee(RandomAccessFile raf) throws IOException{
+        long length = raf.length();
         long pos = raf.getChannel().position();
+
+        /*
+        if the record is last one it will reduce the size to (total length - RECORD_SIZE)
+        if not it will shift last one to the record position to overwrite the delete record and reduce the size to (total length - RECORD_SIZE)
+         */
+
+        if(pos + RECORD_SIZE != length){
+            raf.seek(length - RECORD_SIZE); // To get last record information 
+
+            int id = raf.readInt();
+            String name = readFixedString(raf);
+            double salary = raf.readDouble();
+
+            raf.seek(pos);//Overwrite into deleted record 
+
+            raf.writeInt(id);
+            writeFixedString(name, raf);
+            raf.writeDouble(salary);
+        }
         System.out.println("Employee info has been deleted");
-        displayEmployee(raf); // it will print the employee info before the edit
-        raf.seek(pos);
-        raf.writeInt(-1); // edit the id to prevent from printing 
-        raf.seek(pos); // added
+
+        raf.setLength(length - RECORD_SIZE); //it will change the file length wether the deleted record is last one or any # record
     }
 
     private static void displayEmployee(RandomAccessFile raf) throws IOException {
         int id = raf.readInt();
-        if(id == -1 ){
-            raf.skipBytes(RECORD_SIZE - ID_LENGTH);
-        } else {
-            String name = readFixedString(raf);
-            double salary = raf.readDouble();
-            System.out.printf("%-10d | %-20s | %-10.2f\n", id, name, salary);
-        }
+        String name = readFixedString(raf);
+        double salary = raf.readDouble();
+        System.out.printf("%-10d | %-20s | %-10.2f\n", id, name, salary);
     }
     
     public static String readFixedString(RandomAccessFile raf) throws IOException {
