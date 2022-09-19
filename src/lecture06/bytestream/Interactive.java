@@ -22,7 +22,7 @@ public class Interactive {
             System.out.println("2. Get Employee by record #");
             System.out.println("3. Search for by Empolyee name");
             System.out.println("4. List all Employees");
-            System.out.println("10. Exit");
+            System.out.println("5. Exit");
             System.out.print("Choose from above: ");
 
             option = keyboard.nextLine();
@@ -79,19 +79,30 @@ public class Interactive {
         System.out.println("Choose form following:");
 
         System.out.println("1. Edit");
-        System.out.println("2. Delete (Not implemented yet)");
+        System.out.println("2. Delete");
         
         String option = keyboard.nextLine();
 
         if (option.equals("1")) {
             editEmployee(keyboard, raf);
         } else if (option.equals("2")) {
-            System.out.println("Not implemented yet");
+            deleteEmployee(keyboard, raf);
         } else {
             System.out.println("Wrong choice!");
         }
     }
 
+    
+    private static void deleteEmployee(Scanner keyboard, RandomAccessFile raf) throws IOException  {
+        raf.writeInt(0);
+        writeFixedString("", raf);
+        raf.writeDouble(0);
+        System.out.println("The User has been deleted!");    
+        
+        
+    }
+    
+    
     private static int searchForEmployeeName(String emp_name, RandomAccessFile raf) throws IOException {
 
         // testing first and second record
